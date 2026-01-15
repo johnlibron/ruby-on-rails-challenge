@@ -1,0 +1,1 @@
+class InvalidWeatherResponseError < StandardError; end

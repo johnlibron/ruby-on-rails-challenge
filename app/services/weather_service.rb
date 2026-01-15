@@ -8,10 +8,21 @@ class WeatherService
   end
   
   def get_weather(city)
-    mock_weather_response(city)
+    normalized_city = normalize_city(city)
+    data = mock_weather_response(normalized_city)
+    raise InvalidWeatherResponseError if data.blank?
+    data
   end
   
   private
+
+  def normalize_city(city)
+    city.to_s
+        .strip
+        .downcase
+        .tr('-', ' ')
+        .tr('_', ' ')
+  end
   
   def mock_weather_response(city)
     case city.downcase
@@ -39,18 +50,10 @@ class WeatherService
           }
         ]
       }
+    when 'timeout'
+      raise Timeout::Error
     else
-      {
-        'main' => {
-          'temp' => 20.0,
-          'humidity' => 60
-        },
-        'weather' => [
-          {
-            'description' => 'clear sky'
-          }
-        ]
-      }
+      nil
     end
   end
 end
