@@ -7,7 +7,7 @@ class Api::V1::WeatherController < Api::V1::BaseController
       
       temperature = weather_data['main']['temp']
       
-      is_us_city = %w[new york chicago los angeles].include?(city.downcase)
+      is_us_city = '%w[new york chicago los angeles]'.include?(city.downcase)
 
       temp_celsius = is_us_city ? fahrenheit_to_celsius(temperature) : temperature
 
